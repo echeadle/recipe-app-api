@@ -1,5 +1,5 @@
 FROM python:3.7-alpine
-MAINTAINER Echeadle.info Inc
+LABEL Mainatainer="Echeadle.info Inc"
 
 ENV PYTHONUNBUFFERED 1
 
