@@ -6,16 +6,18 @@ from core.models import Tag, Ingredient, Recipe
 from recipe import serializers
 
 
-class BaseRecipeAttrViewSet(
-    viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin
+class BaseRecipeAttrViewSet(viewsets.GenericViewSet,
+                            mixins.ListModelMixin,
+                            mixins.CreateModelMixin
 ):
-    """Base viewsets for user owned recipe attributes"""
+    """Base viewset for user owned recipe attributes"""
 
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return self.queryset.filter(user=self.request.user).order_by("-name")
+        """Return objects for the current authenticated user only"""
+        return self.queryset.filter(user=self.request.user).order_by('-name')
 
     def perform_create(self, serializer):
         """Create new object"""
@@ -44,7 +46,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        """Retireve the recipies for the authenticated user"""
+        """Retrieve the recipes for the authenticated user"""
         return self.queryset.filter(user=self.request.user)
 
     def get_serializer_class(self):
