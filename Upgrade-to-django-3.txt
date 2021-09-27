@@ -1,0 +1,83 @@
+
+    I upgraded my recipe-app-api project to django 3.2 and with a little bit of work, it ran all 51 tests.
+
+    I first changed the FROM line in my Dockerfile to:
+    FROM python:3.9-alpine
+
+    I changed the requirements.txt file to:
+    Django
+    djangorestframework
+    psycopg2
+    Pillow
+    flake8
+
+    After running:
+    $ docker-compose run --rm app sh -c "python -m pip list"
+    The resulting versions were:
+    Package             Version
+    ------------------- -------
+    asgiref             3.4.1
+    Django              3.2.7
+    djangorestframework 3.12.4
+    flake8              3.9.2
+    mccabe              0.6.1
+    Pillow              8.3.2
+    pip                 21.2.4
+    psycopg2            2.9.1
+    pycodestyle         2.7.0
+    pyflakes            2.3.1
+    pytz                2021.1
+    setuptools          57.5.0
+    sqlparse            0.4.2
+    wheel               0.37.0
+
+    When upgrading from one version of Django to the next, in the
+    django polls tutorial,I found I needed to run:
+     python -Wa manage.py test
+
+     So I ran: docker-compose run --rm app sh -c "python -Wa manage.py test"
+
+    The test showed two different warnings. The first one was duplicated several times:
+
+    1. Warnings about using integers for the Primary Key
+
+    core.Ingredient: (models.W042) Auto-created primary key used when not
+    defining a primary key type, by default 'django.db.models.AutoField'.
+         HINT: Configure the DEFAULT_AUTO_FIELD setting or the
+         CoreConfig.default_auto_field attribute to point to a subclass
+         of AutoField, e.g. 'django.db.models.BigAutoField'.
+
+    I searched the internet and found a great article:
+
+    https://dev.to/weplayinternet/upgrading-to-django-3-2-and-fixing-defaultautofield-warnings-518n
+
+    At the bottom of the app/settings.py file I put:
+
+    DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+    Then ran migrations:
+
+    docker-compose run --rm app sh -c "python manage.py makemigrations core"
+    docker-compose run --rm app sh -c "python manage.py migrate"
+
+    2. Second warning was about a deprecated utility:
+
+    /app/user/serializers.py:50: RemovedInDjango40Warning:
+    django.utils.translation.ugettext_lazy() is deprecated in
+    favor of django.utils.translation.gettext_lazy().
+
+    In user/serializers I changed the import statement from:
+
+    from django.utils.translation import ugettext_lazy as _
+    to:
+    from django.utils.translation import gettext_lazy as _
+
+    After doing these few things, I ran:
+    docker-compose run --rm app sh -c "python -Wa manage.py test && flake8"
+
+    All tests ran with no errors or warnings.
+    ----------------------------------------------------------------------
+    Ran 51 tests in 7.280s
+
+    OK
+

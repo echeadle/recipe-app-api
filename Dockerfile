@@ -1,4 +1,4 @@
-FROM python:3.7-alpine
+FROM python:3.9-alpine
 LABEL Mainatainer="Echeadle.info Inc"
 
 ENV PYTHONUNBUFFERED 1
