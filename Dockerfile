@@ -1,4 +1,5 @@
 FROM python:3.9-alpine3.13
+#FROM python:3.9
 LABEL maintainer="londonappdeveloper.com"
 
 ENV PYTHONUNBUFFERED 1
@@ -11,6 +12,7 @@ EXPOSE 8000
 
 
 ARG DEV=false
+#RUN apk --no-cache add curl
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /tmp/requirements.txt && \
@@ -25,4 +27,7 @@ RUN python -m venv /py && \
 
 ENV PATH="/py/bin:$PATH"
 
-USER django-user
+#RUN chown -R django-user:django-user /app
+#USER django-user
+
+#CMD ["run.sh"]
