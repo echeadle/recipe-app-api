@@ -33,8 +33,8 @@ def create_recipe(user, **params):
     return recipe
 
 
-class PublicRecipeAPITests(TestCase):
-    """Test unauthenticated API Requests"""
+class PublicRecipeApiTests(TestCase):
+    """Test unauthenticated API requests."""
 
     def setUp(self):
         self.client = APIClient()
@@ -47,7 +47,7 @@ class PublicRecipeAPITests(TestCase):
 
 
 class PrivateRecipeAPITests(TestCase):
-    """Test authenticated API Requests"""
+    """Test authenticated Api requests."""
 
     def setUp(self):
         self.client = APIClient()
@@ -55,9 +55,9 @@ class PrivateRecipeAPITests(TestCase):
             'user@example.com',
             'testpass123',
         )
-        self.client.force_authentication(self.user)
+        self.client.force_authenticate(self.user)
 
-    def test_retrieve_recipies(self):
+    def test_retrieve_recipes(self):
         """Test retrieving a list of recipes."""
         create_recipe(user=self.user)
         create_recipe(user=self.user)
