@@ -31,7 +31,7 @@ class PublicTagsApiTests(TestCase):
         """Test auth is required for retrieving tags."""
         res = self.client.get(TAGS_URL)
 
-        self.asssertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class PrivateTagsApiTests(TestCase):
@@ -64,5 +64,5 @@ class PrivateTagsApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 1)
-        self.asserEqual(res.data[0]['name'], tag.name)
-        self.asserEqual(res.data[0]['id'], tag.id)
+        self.assertEqual(res.data[0]['name'], tag.name)
+        self.assertEqual(res.data[0]['id'], tag.id)
