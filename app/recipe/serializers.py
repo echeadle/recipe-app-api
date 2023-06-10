@@ -41,7 +41,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         """Create a recipe."""
         tags = validated_data.pop('tags', [])
         recipe = Recipe.objects.create(**validated_data)
-        self._get_or_create_tags(self, tags, recipe)
+        self._get_or_create_tags(tags, recipe)
 
         return recipe
 
@@ -51,6 +51,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         if tags is not None:
             instance.tags.clear()
             self._get_or_create_tags(tags, instance)
+
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
 
