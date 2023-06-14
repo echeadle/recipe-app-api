@@ -380,7 +380,7 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(recipe.ingredients.count(), 0)
 
 
-    def ImageUploadTests(TestCase):
+    class ImageUploadTests(TestCase):
         """Tests for the image upload API."""
 
         def setUp(self):
@@ -389,7 +389,7 @@ class PrivateRecipeApiTests(TestCase):
                 'user@example.com',
                 'password123',
             )
-            self.client.force_authentication(self.user)
+            self.client.force_authenticate(self.user)
             self.recipe = create_recipe(user=self.user)
 
         def tearDown(self):
